@@ -2,4 +2,12 @@
 
 [V8](https://v8.dev/)
 
+[Node documentation](https://nodejs.org/docs/latest-v22.x/api/index.html)
+
 [Node REPL](https://nodejs.org/en/learn/command-line/how-to-use-the-nodejs-repl)
+
+[Node Modules](https://www.w3schools.com/nodejs/nodejs_modules.asp)
+
+[Node FS Module](https://www.w3schools.com/nodejs/nodejs_filesystem.asp)
+
+[Node FS Module 2](https://nodejs.org/docs/latest-v22.x/api/fs.html)

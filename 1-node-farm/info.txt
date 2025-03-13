@@ -1,6 +1,6 @@
 Tramite il comando node in console è possibile aprire Node REPL (Read Eval Print Loop)
 Qui è possibile scrivere codice JS direttamente nel terminale
-Per uscire da REPL: exit, .exit, ctrl + c
+Per uscire da REPL: exit, .exit, ctrl + c o ctrl + D
 
 premendo Tab vengono visualizzate tutte le variabili globali disponibili in Node ed i suoi moduli
 
