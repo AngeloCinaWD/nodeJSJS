@@ -19,3 +19,5 @@
 [Buffer class](https://nodejs.org/api/buffer.html)
 
 [fs writeFileSync()](https://nodejs.org/docs/latest-v22.x/api/fs.html#fswritefilesyncfile-data-options)
+
+[fs readFile()](https://nodejs.org/docs/latest-v22.x/api/fs.html#fsreadfilepath-options-callback)
