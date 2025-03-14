@@ -21,3 +21,7 @@
 [fs writeFileSync()](https://nodejs.org/docs/latest-v22.x/api/fs.html#fswritefilesyncfile-data-options)
 
 [fs readFile()](https://nodejs.org/docs/latest-v22.x/api/fs.html#fsreadfilepath-options-callback)
+
+[fs writeFile()](https://nodejs.org/docs/latest/api/fs.html#fswritefilefile-data-options-callback)
+
+[emojis vscode](https://www.youtube.com/watch?v=AyVzFZu-Ox8&ab_channel=CodeCraftAcademy)
