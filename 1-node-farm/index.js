@@ -1,18 +1,13 @@
 const fs = require('fs');
 const http = require('http');
-
-// ROUTING: implementare diverse azioni per diversi url
-// per implementare un router con nodejs si utilizza il modulo URL
 const url = require('url');
 
-const server = http.createServer((req, res) => {
-  // loggo l'url della request che arriva, se chiamo localhost:9200 sarà /, l'host è localhost:9200
-  // localhost:9200?ciao=ciao sarà /?ciao=ciao
-  // localhost:9200/overview?ciao=ciao sarà /overview?ciao=ciao
-  console.log(req.url);
+// leggo il file json coi prodotti all'inizio e lo salvo in una const disponibile per tutta l'app
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
+// creo un oggetto js coi prodotti
+const dataProducts = JSON.parse(data);
 
-  // creo un piccolo router
-  // salvo l'url della request
+const server = http.createServer((req, res) => {
   const urlRequest = req.url;
 
   switch (urlRequest) {
@@ -25,17 +20,32 @@ const server = http.createServer((req, res) => {
     case '/products':
       res.end('You called products');
       break;
+    // url api, quando chiamo questa rotta voglio restituire i dati che sono nel file /dev-data/data.json
+    case '/api':
+      // leggo il contenuto del file
+      // fs.readFile(`${__dirname}/dev-data/data.json`, 'utf-8', (err, data) => {
+      //   // il file che leggo contiene un json, lo parso in un oggetto js tramite metodo JSON.parse() e lo salvo in una const
+      //   const products = JSON.parse(data);
+      //   console.log(products);
+      //   // restituisco al browser il json coi prodotti, quindi devo creare un header in cui lo avverto che nella response arriva un json
+      //   res.writeHead(200, 'Lista prodotti', {
+      //     'content-type': 'application/json',
+      //   });
+      //   res.end(data);
+      // });
+      // scritto in questo modo il file json viene letto tutte le volte che viene chiamata la rotta api, lo tolgo da qui ed eseguo l'operazione una volta sola in sincrono all'inizio del codice, in modo da vare a disposizione sempre il file ed averlo caricato una volta sola, all'avvio dell'app
+      res.writeHead(200, 'Lista prodotti', {
+        'content-type': 'application/json',
+      });
+      // sto restituendo il json che ho letto all'avvio dell'app
+      res.end(data);
+      //res.end('API Products');
+      break;
     default:
-      // in caso una rotta chiamata non sia fra quelle note ritorno un header con codice di errore 404
-      // utilizzo il metodo dells response .writeHead(statuscode, statusmessage, {headers})
-      // tramite header posso passare info con la response al client che ha effettuato la request
-      // ad esempio indicando il content-type come text/html informo il browser che sta ricevendo una stringa che deve essere trattata come HTML
       res.writeHead(404, 'PageNotFound', {
         'content-type': 'text/html',
-        // posso passare tutte le info che voglio
         'info-che-voglio': 'ciao, sono una info che voglio',
       });
-      // passo una stringa con tag html che il browser interpretrà come tali
       res.end('<h1>404 page not found</h1>');
   }
 });

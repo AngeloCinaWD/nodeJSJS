@@ -43,3 +43,7 @@
 [js switch statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch)
 
 [response.writeHead()](https://nodejs.org/docs/latest/api/http.html#responsewriteheadstatuscode-statusmessage-headers)
+
+[nodejs \_\_dirname](https://www.digitalocean.com/community/tutorials/nodejs-how-to-use__dirname)
+
+[JSON.parse()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse)
