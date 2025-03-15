@@ -25,3 +25,15 @@
 [fs writeFile()](https://nodejs.org/docs/latest/api/fs.html#fswritefilefile-data-options-callback)
 
 [emojis vscode](https://www.youtube.com/watch?v=AyVzFZu-Ox8&ab_channel=CodeCraftAcademy)
+
+[change name local commit and push in remote to update](https://stackoverflow.com/a/44582341)
+
+[Node HTTP Module](https://nodejs.org/docs/latest/api/http.html)
+
+[.createServer()](https://nodejs.org/docs/latest/api/http.html#httpcreateserveroptions-requestlistener)
+
+[response.end()](https://nodejs.org/docs/latest/api/http.html#responseenddata-encoding-callback)
+
+[server.listen()](https://nodejs.org/docs/latest/api/http.html#serverlisten)
+
+[0.0.0.0](https://stackoverflow.com/questions/33953447/express-app-server-listen-all-interfaces-instead-of-localhost-only)

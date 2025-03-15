@@ -1,33 +1,22 @@
 const fs = require('fs');
+// per creare e gestire un webserver si utilizza il modulo http
+const http = require('http');
 
-const textIn = fs.readFileSync('./txt/input.txt', 'utf-8');
+// creo un server
+// la callback di questo metodo accetta 2 parametri: request e response, request in arrivo e response da dare
+// The requestListener is a function which is automatically added to the 'request' event.
+// lo salvo in una const
+const server = http.createServer((req, res) => {
+  // creo una risposta generale ogni volta che si invia una request al server
+  // metodo .end della response
+  console.log(req.headers.host);
 
-console.log(textIn);
+  res.end('Hello from server!');
+});
 
-const textOut = `This is new text: today is ${new Date()}.\nAvocado is: ${textIn}`;
-console.log(textOut);
-
-fs.writeFileSync('./txt/output.txt', textOut);
-console.log(fs.readFileSync('./txt/output.txt', 'utf-8'));
-
-// non-blocking code, asynchronous way
-// questo metodo accetta 3 parametri: il path al file, l'encoding e la callback da eseguire
-fs.readFile('./txt/start.txt', 'utf-8', (err, data) => {
-  // la callback ha 2 parametri: il primo è l'eventuale errore ed il secondo i dati letti dal file
-  console.log('1😶: ' + data);
-  // chiamo di nuovo il metodo .readFile(), leggo il file read-this.txt, read-this è il contenuto del file start.text, quindi quando ho letto il primo file leggo il secondo
-  fs.readFile(`./txt/${data}.txt`, 'utf-8', (err, data2) => {
-    console.log('2😍: ' + data2);
-    // leggo un altro file
-    fs.readFile('./txt/append.txt', 'utf-8', (err, data3) => {
-      console.log('3: ' + data3);
-      // dopo che ho letto tutti i file ne creo uno nuovo col metodo asincrono writeFile()
-      fs.writeFile('./txt/nuovo.txt', data + data2 + data3, 'utf-8', err => {
-        // una volta creato lo leggo
-        fs.readFile('./txt/nuovo.txt', 'utf-8', (err, data4) => {
-          console.log('4: ' + data4);
-        });
-      });
-    });
-  });
+// metto in ascolto su una determinata porta il server che ho creato
+// di default, se non lo specifico, l'host è il localhost, con 0.0.0.0 metto in ascolto in remoto sulla rete
+// il metodo .listen ha una callback
+server.listen(9200, '0.0.0.0', () => {
+  console.log('Listening to requests on port 9200');
 });
