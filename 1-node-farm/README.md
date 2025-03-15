@@ -37,3 +37,9 @@
 [server.listen()](https://nodejs.org/docs/latest/api/http.html#serverlisten)
 
 [0.0.0.0](https://stackoverflow.com/questions/33953447/express-app-server-listen-all-interfaces-instead-of-localhost-only)
+
+[node URL module](https://nodejs.org/docs/latest/api/url.html)
+
+[js switch statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch)
+
+[response.writeHead()](https://nodejs.org/docs/latest/api/http.html#responsewriteheadstatuscode-statusmessage-headers)
