@@ -47,3 +47,9 @@
 [nodejs \_\_dirname](https://www.digitalocean.com/community/tutorials/nodejs-how-to-use__dirname)
 
 [JSON.parse()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse)
+
+[js .replace()](https://www.w3schools.com/jsref/jsref_replace.asp)
+
+[js .replaceAll()](https://www.w3schools.com/jsref/jsref_string_replaceall.asp)
+
+[js .join()](https://www.w3schools.com/jsref/jsref_join.asp)
