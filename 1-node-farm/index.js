@@ -3,11 +3,6 @@ const http = require('http');
 const url = require('url');
 
 const replaceTemplate = (template, product) => {
-  // per rimpiazzare i placeholder si utilizza il metodo js per le stringhe .replace('searchValue', 'newValue')
-  // per cercare tutti i placeholder con quel nome (altrimenti il metodo sostituisce solo il primo che trova nella stringa) utilizziamo una regex col flag g (global)
-  // oppure potremmo utilizzare il metodo .replaceAll() è case-sensitive
-  // creo una let con la nuova stringa col primo placeholder sostituito ed ogni volta la sovrascrivo sostituendo u altro placeholder
-
   let output = template.replace(/{%PRODUCTNAME%}/g, product.productName);
   output = output.replace(/{%IMAGE%}/g, product.image);
   output = output.replace(/{%QUANTITY%}/g, product.quantity);
@@ -24,7 +19,6 @@ const replaceTemplate = (template, product) => {
   return output;
 };
 
-// leggo i templates html all'avvio dell'app e li salvo in delle const
 const templateOverview = fs.readFileSync(
   `${__dirname}/templates/overview.html`,
   'utf-8'
@@ -38,44 +32,62 @@ const templateCard = fs.readFileSync(
   'utf-8'
 );
 
-// data products, string json e object jss
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
 const dataProducts = JSON.parse(data);
 
-// funzione per sostituire i placeholder con i valori di ogni prodotto
-// questa funzione ritorna una stringa col codice html coi placeholder sostituiti con i valori di ogni singolo prodotto
-
 const server = http.createServer((req, res) => {
-  const urlRequest = req.url;
+  // const urlRequest = req.url;
+  const path = req.url;
+
+  // il metodo .parse() del modulo url mi restituisce un oggetto contenente le proprietà ricavate dal request url (che sarebbe la path che chiamo dopo l'host, comprende la path e i query params), ad esempio la pathname, la path, l'host, la port, i query params ed altri.
+  // passando il secondo parametro true vuol dire che il valore di query viene parsato in un oggetto js (altrimenti sarebbe una stringa)
+  // dato che è un oggetto posso destrutturarlo ed ottenere delle const che mi interessano: query e pathName (mi interessa la pathname perchè è la parte di path senza i query parmas ed è importante perchè se faccio l'equivalenza tra la path e ad esempio /product&id=0 avrò sempre una pagina non trovata, devo invece fare l'equivalenza con la pathName che è solo /product e poi renderizzare il template del prodotto tramite id passato come query params)
+  console.log(url.parse(path, true));
+
+  const { query, pathname } = url.parse(path, true);
 
   // Overview page
   // ritorniamo un html, quindi content-type: text/html
-  if (urlRequest === '/' || urlRequest === '/overview') {
+  // if (urlRequest === '/' || urlRequest === '/overview') {
+  // if (path === '/' || path === '/overview') {
+  if (pathname === '/' || pathname === '/overview') {
     res.writeHead(200, 'Overview', {
       'content-type': 'text/html',
     });
 
-    // devo sostituire il placeholder (%PRODUCT_CARDS%) che è nel template overview.html
-    // lo faccio col metodo .map() sull'array dataProducts, per ogni elemento presente nell'array richiamo una funzione che creo replaceTemplate() a cui passo il template card.html e l'elemento dell'array (un prodotto), nella funzione andrò a sostiture i valori delle proprietà id, price, quantity etc al posto dei placeholder che ho messo in card.html
-    // il risultato del .map() è un nuovo array che salvo in una const
-    // tramite .join() ottengo una stringa composta da tutti gli elementi dell'array, con separatore '' empty string
     const cardsHtml = dataProducts
       .map(product => replaceTemplate(templateCard, product))
       .join('');
-
-    // console.log(cardsHtml);
-
-    // sopstituisco la stringa al posto del placeholder >{%PRODUCT_CARDS%} nel template overview
 
     res.end(templateOverview.replace(/{%PRODUCT_CARDS%}/g, cardsHtml));
   }
 
   // Product page
-  else if (urlRequest === '/product') {
-    res.end('You called product');
+  // else if (urlRequest === '/product') {
+  // else if (path === '/product') {
+  else if (pathname === '/product') {
+    // quando la pathname è product ci sarà anche un query params id
+    // questo id è l'id del prodotto che voglio renderizzare
+    // vado quindi a prendere il prodotto con quell'id (che corrisponde all'index che ha il prodotto nell'array dataProducts)
+    const product = dataProducts[query.id];
+
+    // chiamo la funzione per sostituire i valori del prodotto ai placeholder nell'html product
+    const templateHtmlProduct = replaceTemplate(templateProduct, product);
+
+    // dchiaro nell'header che sto rispondendo con un html
+    res.writeHead(200, `Product: ${product.productName}`, {
+      'content-type': 'text/html',
+    });
+    console.log(product);
+    console.log(templateHtmlProduct);
+
+    // res.end('You called product');
+    res.end(templateHtmlProduct);
   }
   // API
-  else if (urlRequest === '/api') {
+  // else if (urlRequest === '/api') {
+  // else if (path === '/api') {
+  else if (pathname === '/api') {
     res.writeHead(200, 'Lista prodotti', {
       'content-type': 'application/json',
     });
