@@ -1,5 +1,10 @@
 const http = require('http');
 const url = require('url');
+
+// per utilizzare un package installato tramite npm utilizzo sempre la funzione require('nomePackage')
+// slugify mi permette di creare degli slug, delle stringhe uniche che rappresentano l'ultima parte di un url
+const slugify = require('slugify');
+
 const replaceTemplate = require('./modules/replaceTemplate');
 const {
   templateOverview,
@@ -7,6 +12,17 @@ const {
   templateCard,
 } = require('./modules/templatesHtml');
 const { data, dataProducts } = require('./modules/dataProducts');
+
+// per utilizzare slugify si passa una stringa alla funzione slugify()
+// posso aggiungere delle opzioni ad esempio lowercase, replacement degli spaces (di default -), trim ed altre
+console.log(slugify('Fresh Avocados', { lower: true, replacement: '*' }));
+
+// creo un array con lo slug per ogni prodotto in base al suo nome
+const slugs = dataProducts.map(product =>
+  slugify(product.productName, { lower: true })
+);
+
+console.log(slugs);
 
 const server = http.createServer((req, res) => {
   const { query, pathname } = url.parse(req.url, true);
