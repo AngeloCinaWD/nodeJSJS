@@ -65,3 +65,7 @@
 [npm i --save](https://stackoverflow.com/questions/19578796/what-is-the-save-option-for-npm-install)
 
 [nodemon](https://www.npmjs.com/package/nodemon)
+
+[npm About semantic versioning](https://docs.npmjs.com/about-semantic-versioning)
+
+[npm About semantic versioning Video](https://www.youtube.com/watch?v=kK4Meix58R4)

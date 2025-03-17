@@ -1,8 +1,6 @@
 const http = require('http');
 const url = require('url');
 
-// per utilizzare un package installato tramite npm utilizzo sempre la funzione require('nomePackage')
-// slugify mi permette di creare degli slug, delle stringhe uniche che rappresentano l'ultima parte di un url
 const slugify = require('slugify');
 
 const replaceTemplate = require('./modules/replaceTemplate');
@@ -13,16 +11,9 @@ const {
 } = require('./modules/templatesHtml');
 const { data, dataProducts } = require('./modules/dataProducts');
 
-// per utilizzare slugify si passa una stringa alla funzione slugify()
-// posso aggiungere delle opzioni ad esempio lowercase, replacement degli spaces (di default -), trim ed altre
-console.log(slugify('Fresh Avocados', { lower: true, replacement: '*' }));
-
-// creo un array con lo slug per ogni prodotto in base al suo nome
 const slugs = dataProducts.map(product =>
   slugify(product.productName, { lower: true })
 );
-
-console.log(slugs);
 
 const server = http.createServer((req, res) => {
   const { query, pathname } = url.parse(req.url, true);
@@ -72,15 +63,20 @@ server.listen(9200, '0.0.0.0', () => {
   console.log('Listening to requests on port 9200');
 });
 
-// con NPM possiamo installare 2 tipi di packages: dependencies e development dependencies
-// il primo package che installiamo è slugify
-// il comando per installare un package con npm è npm install (npm i) nomePackage
-// prima si aggiungeva --save come flag ora non più, questo perchè prima della versione 5 npm installava un package in node_modules senza salvarlo nelle dependencies, cosa che avveniva col flag --save
-// una volta installato il package con npm i slugify viene aggiunto un campo nuovo nel package.json, la proprietà dependencies con valore un oggetto col nome e la versione del package installato
-// alcuni packages vengono installati come dev-dependencies, cioè utilizzati solo per lo sviluppo, non vengono buildati per la production dell'app, ad esempio nodemon
-// per installare un package come dev-dependencies si utilizza il flag --save-dev: npm i nomePackage --save-dev
-// nodemon è un tool che riavvia l'app ogni volta che c'è un cambiamento, non devo ogni volta chiudere e riavviare il server
-// installati in questo modo i packages sono utilizzabili solo in questo progetto, sono stati installati localmente
-// un package installato globalmente non può essere utilizzato da linea di comando, cioè il comando nodemon non esiste nelle path del sistema, quindi se runnassi nodemon index.js avrei un errore. Per avviarlo in locale o eseguo il comando preceduto da npx: npx nodemon index.js oppure creo un comando runnabile da npm, andandolo a d aggiungere nell'oggetto scripts del package.json: "start": "nodemon index.js". Per avviare il server con node ora posso runnare npm run start (o anche solo npm start) e verrà eseguito il comando nodemon index.js. In questo modo gli sto dicendo di utilizzare il nodemon che è installato nelle dev-dependencies
-// per farlo funzionare devo utilizzare il comando npx nodemon index.js oppure installare nodemon in maniera globale: nom i nodemon --global
-// nodemon è un wrapper, infatti runna sempre: [nodemon] starting `node .\index.js`
+// nel package.json le dependencies vengono salvate indicando anche la versione
+// si utilizza la cosiddetta semantic version notation, ad es: ^1.18.11
+// la versione è sempre espressa con 3 numeri
+// il primo numero indica la major version, il secondo la minor version ed il terzo la patch version
+// patch version: versione rilasciata per fixare i bugs (ho la versione 1.18, trovo un bug e lo fixo avrò la 1.18.1, ne trovo un altro e lo fixo 1.18.2 e così via)
+// minor version: vengono rilasciate nuove features nella major, non ci sono breaking changes, cioè le features sono compatibili con le versioni precedenti ad esempio con la 1.17, la 1.16 etc
+// major version viene rilasciata quando alcune nuove features implementate potrebbero non essere compatibili, quindi non funzionare, con le precedenti versioni (ad esempio slugify ora utilizza con la major 1 la funzione slugify(), magari esce la 2 in cui questa funzione ha cambiato nome tipo slugify2() o i parametri che si aspetta sono diversi anche nel nome, ad es. lower diventa lowercase)
+// ^ (accento circonflesso) indica che si accettano minor version e patch differenti della stessa major
+// il comando npm outdated mi dà una tabella coi packages obsoleti
+// per installare una specifica versione di un package runno il comando nom i namePackage@x.x.x
+// se installo slugify tramite npm i slugify avrò l'ultima versione, con la tilde che indica che però accetto anche minor e patch precedenti, ad esempio posso installare npm i slugify@1.0.0
+// se però cambio ^ con la tilde ~ accetto solo patch version
+// esempio installo slugify 1.0.0, la più recente è la 1.6.6, se ho ^1.0.0 e runno npm outdated mi dice che slugify è obsoleto perchè è la versione 1.0.0 e che la voluta sarebbe 1.6.6 (stessa major, accetto tutte le minor e le patch in un eventuale update)
+// se sostituisco ^ con ~ e runno npm outdated mi dice che la voulta (la massima che posso accettare in un eventuale update) è la 1.0.2, accetto solo patch maggiori
+// per aggiornare un package npm update nomePackage, per visualizzare la nuova versione devo runnare npm i
+// l'* prima indica che in caso di update va bene qualsiasi versione, la più aggiornata anche per la major
+// per disinstallare un package npm uninstall namePackage
