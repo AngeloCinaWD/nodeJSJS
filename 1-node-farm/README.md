@@ -60,6 +60,8 @@
 
 [slugify](https://www.npmjs.com/package/slugify)
 
+[slug degli url](https://www.italiaonline.it/risorse/slug-cos-e-perche-va-ottimizzato-per-la-seo-e-come-farlo-6307)
+
 [npm i --save](https://stackoverflow.com/questions/19578796/what-is-the-save-option-for-npm-install)
 
 [nodemon](https://www.npmjs.com/package/nodemon)
