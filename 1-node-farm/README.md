@@ -57,3 +57,9 @@
 [nodejs url.parse()](https://nodejs.org/docs/latest/api/url.html#urlparseinput-base)
 
 [npm](https://www.npmjs.com/)
+
+[slugify](https://www.npmjs.com/package/slugify)
+
+[npm i --save](https://stackoverflow.com/questions/19578796/what-is-the-save-option-for-npm-install)
+
+[nodemon](https://www.npmjs.com/package/nodemon)

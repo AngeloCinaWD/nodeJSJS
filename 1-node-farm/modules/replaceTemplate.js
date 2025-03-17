@@ -1,4 +1,3 @@
-// per esportare del codice utilizzo il metodo .exports dell'oggetto module
 module.exports = (template, product) => {
   let output = template.replace(/{%PRODUCTNAME%}/g, product.productName);
   output = output.replace(/{%IMAGE%}/g, product.image);

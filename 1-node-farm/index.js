@@ -1,32 +1,12 @@
-// coi moduli creati fs qui non lo utilizzo più
-// const fs = require('fs');
 const http = require('http');
 const url = require('url');
 const replaceTemplate = require('./modules/replaceTemplate');
-// creo un nuovo modulo con un oggetto che contiene i 3 template html, destrutturo l'oggetto ed ottengo 3 const col nome di ogni template html che sto esportando dasl modulo
 const {
   templateOverview,
   templateProduct,
   templateCard,
 } = require('./modules/templatesHtml');
-// creo un modulo coi dati dei prodotti, il json e l'oggetto js
 const { data, dataProducts } = require('./modules/dataProducts');
-
-// const templateOverview = fs.readFileSync(
-//   `${__dirname}/templates/overview.html`,
-//   'utf-8'
-// );
-// const templateProduct = fs.readFileSync(
-//   `${__dirname}/templates/product.html`,
-//   'utf-8'
-// );
-// const templateCard = fs.readFileSync(
-//   `${__dirname}/templates/card.html`,
-//   'utf-8'
-// );
-
-// const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
-// const dataProducts = JSON.parse(data);
 
 const server = http.createServer((req, res) => {
   const { query, pathname } = url.parse(req.url, true);
@@ -76,6 +56,15 @@ server.listen(9200, '0.0.0.0', () => {
   console.log('Listening to requests on port 9200');
 });
 
-// NPM: manager for the third party Open Source packages
-// in un nuovo progetto in cui non è installato va runnato il comando: npm init
-// ci vengono chieste una serie di info e viene creato il file package.json
+// con NPM possiamo installare 2 tipi di packages: dependencies e development dependencies
+// il primo package che installiamo è slugify
+// il comando per installare un package con npm è npm install (npm i) nomePackage
+// prima si aggiungeva --save come flag ora non più, questo perchè prima della versione 5 npm installava un package in node_modules senza salvarlo nelle dependencies, cosa che avveniva col flag --save
+// una volta installato il package con npm i slugify viene aggiunto un campo nuovo nel package.json, la proprietà dependencies con valore un oggetto col nome e la versione del package installato
+// alcuni packages vengono installati come dev-dependencies, cioè utilizzati solo per lo sviluppo, non vengono buildati per la production dell'app, ad esempio nodemon
+// per installare un package come dev-dependencies si utilizza il flag --save-dev: npm i nomePackage --save-dev
+// nodemon è un tool che riavvia l'app ogni volta che c'è un cambiamento, non devo ogni volta chiudere e riavviare il server
+// installati in questo modo i packages sono utilizzabili solo in questo progetto, sono stati installati localmente
+// un package installato globalmente non può essere utilizzato da linea di comando, cioè il comando nodemon non esiste nelle path del sistema, quindi se runnassi nodemon index.js avrei un errore. Per avviarlo in locale o eseguo il comando preceduto da npx: npx nodemon index.js oppure creo un comando runnabile da npm, andandolo a d aggiungere nell'oggetto scripts del package.json: "start": "nodemon index.js". Per avviare il server con node ora posso runnare npm run start (o anche solo npm start) e verrà eseguito il comando nodemon index.js. In questo modo gli sto dicendo di utilizzare il nodemon che è installato nelle dev-dependencies
+// per farlo funzionare devo utilizzare il comando npx nodemon index.js oppure installare nodemon in maniera globale: nom i nodemon --global
+// nodemon è un wrapper, infatti runna sempre: [nodemon] starting `node .\index.js`
