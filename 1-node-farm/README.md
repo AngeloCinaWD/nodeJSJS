@@ -69,3 +69,7 @@
 [npm About semantic versioning](https://docs.npmjs.com/about-semantic-versioning)
 
 [npm About semantic versioning Video](https://www.youtube.com/watch?v=kK4Meix58R4)
+
+[todohighlight.keywords](https://github.com/wayou/vscode-todo-highlight/issues/18)
+
+[prettier](https://prettier.io/)
