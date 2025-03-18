@@ -73,3 +73,5 @@
 [todohighlight.keywords](https://github.com/wayou/vscode-todo-highlight/issues/18)
 
 [prettier](https://prettier.io/)
+
+[js setTimeout()](https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout)
