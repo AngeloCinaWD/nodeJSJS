@@ -19,3 +19,12 @@
     
     Quando i dati arrivano al client vengono interpretati attraverso HTML, CSS e JS
 */
+
+// LECTURE27. Front-End vs. Back-End Web Development
+/*
+  In generale per Fronte-End ci si riferisce a tutto quello che accade nel web browser, quindi design e building, tutto ciò che è visibile allo user.
+  Per Back-End ci si riferisce a tutto quello che è invisibile allo user. Un web server non è altro che un computer che ha installato un HTTP Server, cioè qualcosa in grado di capire le request che arrivano e gestire le response (è lui che comunica col browser).
+  Nel web server sono salvati i files che servono per costruire una pagina web (immagini, html, css, js etc) e un'app che gestisce questi dat e quelli possibilmente salvati in un database (contiene i dati per riempire i files tipo le stringhe dei titoli, i dati dello user etc)
+
+  NodeJS è un'app che ci aiuta a gestire il nostro web server e comunica con un database tipo MongoDB
+ */
