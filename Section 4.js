@@ -7,3 +7,10 @@
     Quindi Node è scritto in JS ed in C++.
     Node ci permette di accedere alle funzionalità di queste librerie in puro JS
 */
+
+// Lecture31. Processes, Threads and the Thread Pool
+
+/*
+    Process: programma in esecuzione, node ha una classe Process che ci permette di accedere al processo in esecuzione
+    Thread: sequenza di istruzioni, Node lavora in single thread, quindi è facilmente bloccabile se c'è qualche errore. Sequenza di esecuzione del thread: Inizializzazione del programma -> esecuzione top-level code (proprietà e metodi legati all'oggetto globale) -> caricamento dei moduli -> registro delle callback -> inizia l'event-loop. L'event loop non riesce a gestire tutti i tasks e quindi alcuni (quelli più pesanti) vengono dirottati al thread pool, un'architettura fornita da libuv che gestisce 4 Thread separati. Questo avviene per evitare che tasks difficili e pesanti possano bloccare l'esecuzione del programma che runna nel single thread.
+*/
