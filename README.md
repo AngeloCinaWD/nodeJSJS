@@ -95,3 +95,15 @@
 [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE)
 
 [js Promise.all()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
+
+[expressjs](https://expressjs.com/)
+
+[express app.listen()](https://expressjs.com/en/4x/api.html#app.listen)
+
+[express routing](https://expressjs.com/en/starter/basic-routing.html)
+
+[express res.send()](https://expressjs.com/en/4x/api.html#res.send)
+
+[express res.status()](https://expressjs.com/en/4x/api.html#res.status)
+
+[express res.json()](https://expressjs.com/en/4x/api.html#res.json)
