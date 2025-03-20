@@ -28,37 +28,51 @@ const fileDaScrivere = `${__dirname}/dog-img.txt`;
 
 const readAndWrite = async (fileLettura, fileScrittura) => {
   try {
+    // posso risolvere più promise insieme invece che una alla volta utilizzando il metodo Promise.all() con l'await
+    // vale solo per le promises che non prendono dati da altre promises non precedentemente risolte
+    // per farlo salvo direttamente le promises in const senza await
     const risultatoLettura = await readFilePromise(fileLettura);
-    const responseSuperAgent = await superagent.get(
+
+    // const responseSuperAgent = await superagent.get(
+    //   `https://dog.ceo/api/breed/${risultatoLettura}/images/random`
+    // );
+    const responseSuperAgent = superagent.get(
       `https://dog.ceo/api/breed/${risultatoLettura}/images/random`
     );
+    const responseSuperAgent2 = superagent.get(
+      `https://dog.ceo/api/breed/${risultatoLettura}/images/random`
+    );
+    const responseSuperAgent3 = superagent.get(
+      `https://dog.ceo/api/breed/${risultatoLettura}/images/random`
+    );
+
+    // e poi le metto in un array passato come parametro al metodo Promise.all()
+    // questo mi restituisce un array contenente in ordine le promises risolte
+    const allResponses = await Promise.all([
+      responseSuperAgent,
+      responseSuperAgent2,
+      responseSuperAgent3,
+    ]);
+
+    // creo un array con gli url di ogni immagine
+    const imgsUrl = allResponses.map(res => res.body.message);
+
+    console.log(imgsUrl);
+
     const risultatoScrittura = await writeFilePromise(
       fileScrittura,
-      responseSuperAgent.body.message
+      // responseSuperAgent.body.message
+      // uso il .join() per creare 3 stringhe separate da un new line
+      imgsUrl.join('\n')
     );
+
     return risultatoScrittura;
   } catch (err) {
-    // se voglio che il metodo async mi lanci un errore in caso di errore, devo utilizzare lo statement throw
-    // è bloccante quindi non serve il return
-    // return err.message;
     throw err.message;
   }
 };
 
-// utilizzando il throw la promise che viene ritornata dal metodo async non sarà fullfilled in caso di errore ma sarà rejected, quindi posso catchare l'errore col metodo .catch()
-readAndWrite(fileDaLeggere, fileDaScrivere)
-  .then(risultatoScrittura =>
-    console.log('Promise fullfilled: ' + risultatoScrittura)
-  )
-  .catch(err => console.log('Promise rejected: ' + err));
-
-// in questo modo stiamo gestendo un metodo async await con il .then() ed il .catch()
-// per utilizzare sempre async await si possono utilizzare le IIFE
-// cioè funzioni invocate immediatamente da JS, sono dette anche funzioni anonime autoeseguenti (cioè vengono invocate da JS)
-// per definire una IIFE si mette la funzione tra parentesi tonde e viene invocata normalmente con le parentesi tonde (funzione da eseguire)()
-// dichiaro la IIFE async e quello che deve essere eeguito await
 (async () => {
-  // utilizzo il try catch block per gestire un eventuale error+
   try {
     console.log(`IIFE: ${await readAndWrite(fileDaLeggere, fileDaScrivere)}`);
   } catch (err) {

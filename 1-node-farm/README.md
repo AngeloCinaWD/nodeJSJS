@@ -93,3 +93,5 @@
 [js throw](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw)
 
 [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE)
+
+[js Promise.all()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
