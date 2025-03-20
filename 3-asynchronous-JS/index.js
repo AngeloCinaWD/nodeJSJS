@@ -1,72 +1,107 @@
 const fs = require('fs');
-// installiamo il package superagent via npm, per le chiamate ajax
 const superagent = require('superagent');
 
-// fs.readFile(`${__dirname}/dog.txt`, 'utf-8', (err, data) => {
+// costruisco un metodo che mi ritorni una Promise dopo aver letto un file
+// accetta come parametro un file
+const readFilePromise = file => {
+  // ritorna un oggetto Promise disponibile dalla versione ES6 di JS
+  // l'oggetto Promise nel suo constructor chiama un metodo chiamato Executor Function che vuole 2 parametri: resolve e reject
+  // sono 2 funzioni, una viene eseguita in caso la Promise ha successo ed una in caso di errore
+  // il codice eseguito nella Promise è asincrono
+  // quando creo la Promise questa ha valore Pending
+  return new Promise((resolve, reject) => {
+    // leggo il file che passo alla funzione
+    fs.readFile(file, (err, data) => {
+      // in caso di errore restituisco un messaggio chiamando il metodo reject(), la Promise è rejected, disponibile tramite metodo .catch()
+      if (err) {
+        reject({ message: 'An error in reading occurred: ' + err.message });
+      }
+      // in caso vada tutto bene, tramite metdodo resolve() ritorno il contenuto del file nella Promise fullfilled, disponibile tramite metodo .then()
+      resolve(data);
+    });
+  });
+};
+
+// costruisco un metodo che mi ritorni una promise dopo aver scritto un file
+const writeFilePromise = (file, data) => {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(file, data, err => {
+      if (err) {
+        reject({ message: 'An error  in writing occurred: ' + err.message });
+      }
+      resolve('Url image saved in ' + file);
+    });
+  });
+};
+
+// riscrivo tutto chiamando il metodo readFilePromise() e gestendo il tutto tramite .then() e .catch()
+// readFilePromise(`${__dirname}/dog.txt`)
+//   .then(risultatoPromiseFullfilled => {
+//     superagent
+//       .get(
+//         `https://dog.ceo/api/breed/${risultatoPromiseFullfilled}/images/random`
+//       )
+//       .then(res => {
+//         // riscrivo chiamando il metodo writeFilePromise()
+//         // fs.writeFile(
+//         //   `${__dirname}/dog-img.txt`,
+//         //   res.body.message,
+//         //   'utf-8',
+//         //   err => {
+//         //     if (err) {
+//         //       return console.log(err.message);
+//         //     }
+//         //     console.log('url image saved!');
+//         //   }
+//         // );
+//         // provoco errore in scrittura passando un oggetto e non un stringa
+//         // writeFilePromise(`${__dirname}/dog-img.txt`, res)
+//         writeFilePromise(`${__dirname}/dog-img.txt`, res.body.message)
+//           .then(risolto => console.log(risolto))
+//           .catch(err => console.log('Errore in scrittura: ' + err));
+//       })
+//       .catch(error => console.log('catch error: ' + error.message));
+//   })
+//   // gestisco l'errore della Promise che ho creato
+//   // quello che ritornavo come errore era una stringa
+//   .catch(err => {
+//     console.log('Error Promise creata: ' + err);
+//   });
+
+// fs.readFile(`${__dirname}/dog.txt`, (err, data) => {
 //   superagent
 //     .get(`https://dog.ceo/api/breed/${data}/images/random`)
-//     .end((err, res) => {
-//       if (err) {
-//         return console.log(err.message);
-//       }
-//       console.log(res.body.message);
+//     .then(res => {
 //       fs.writeFile(
 //         `${__dirname}/dog-img.txt`,
 //         res.body.message,
 //         'utf-8',
 //         err => {
+//           if (err) {
+//             return console.log(err.message);
+//           }
 //           console.log('url image saved!');
 //         }
 //       );
-//     });
+//     })
+//     .catch(error => console.log('catch error: ' + error.message));
 // });
 
-// in questo modo stiamo eseguendo codice asincrono ogni volta che viene chiamata una callback, in ogni callback viene fatto qualcosa, questo modo di scrivere porta a quello che viene chiamato Callbacks Hell (callbacks innestate una nell'altra)
-// questo modo di scrivere codice risulta poco chiaro ed illegibile man mano che aumenta il numero delle callbacks innestate
-// per evitarlo si possono utilizzare le Promises di JS (A promise represents the eventual completion (or failure) of an asynchronous operation and its resulting value.)
-// il metod .get() di superagent ritorna una promise, se invece voglio gestire con una promise qualcosa come il fs.writefile() non con callback ma con promise devo crearla io la promise, perchè questi metodi non la ritornano di default
-// una promise all'inizio ha valore pending (non contiene nessun dato) perchè conterrà la risposta di un qualcosa che non è ancora avvenuto, un qualcosa di asincrono
+// riscrivo tutto concatenando i .then()
+// il codice così scritto non assume la forma triangolare tipica delle callbacs innestate, ma è tutto dritto
+// funziona anche senza return in ogni .then() perchè sono arrow function con una sola riga di esecuzione di codice, se aggiungessi un console.log del risultato dovrei mettere le graffe e fare il return del metodo che chiamo
+readFilePromise(`${__dirname}/dog.txt`)
+  // readFilePromise() mi ritorna una Promise quindi concateno un .then() in cui effettuo la request con superagent.get()
+  .then(risultatoPromiseFullfilledLetturaFile => {
+    console.log('prova console log per utilizzare il return');
 
-fs.readFile(`${__dirname}/dog.txt`, 'utf-8', (err, data) => {
-  superagent
-    // dato che il metodo get ritorna una promise, questa viene già creata ma ha valore pending, non contiene nessun dato
-    // un oggetto Promise contiene diverse metodi: il .then() viene invocato quando la request va a buon fine e la promise assume valore fullfilled. Il metodo .catch() viene invocato in caso di fallimento della request e la promise assume valore rejected
-    .get(`https://dog.ceo/api/breed/${data}/images/random`)
-    // chiamata con errore nell'url che viene catchato dal .catch()
-    // .get(`https://dog.ceo/api/bre/${data}/images/random`)
-    // una promise fullfilled viene gestita col metodo .then() che ha una callback che viene eseguita quando arriva la risposta dal server
-    // il parametro della callback è la response
-    .then(res => {
-      // aspetto che arrivi la response e salvo l'url dell'image in un file di testo
-      // la promise passa da pending a fullfilled (resolved) quando arriva la risposta
-      fs.writeFile(
-        `${__dirname}/dog-img.txt`,
-        res.body.message,
-        'utf-8',
-        err => {
-          if (err) {
-            return console.log(err.message);
-          }
-          console.log('url image saved!');
-        }
-      );
-    })
-    // il metodo .then() non fa nulla se c'è un errore nella chiamata perchè viene invocato solo se la request è andata a buon fine
-    // per gestire gli errori abbiamo bisogno di un altro metodo il .catch() che viene conacatenato agli eventuali .then() e viene invocato in caso di fallimento della request
-    // in caso di errore il valore della promise è rejected
-    .catch(error => console.log('catch error: ' + error.message));
-  // .end((err, res) => {
-  //   if (err) {
-  //     return console.log(err.message);
-  //   }
-  //   console.log(res.body.message);
-  // fs.writeFile(
-  //   `${__dirname}/dog-img.txt`,
-  //   res.body.message,
-  //   'utf-8',
-  //   err => {
-  //     console.log('url image saved!');
-  //   }
-  // );
-  // });
-});
+    return superagent.get(
+      `https://dog.ceo/api/breed/${risultatoPromiseFullfilledLetturaFile}/images/random`
+    );
+  })
+  // superagent.get() mi ritorna una promise quindi con un altro .then() ne posso gestire il risultato e chiamo il metodo writeFilePromise()
+  .then(res => writeFilePromise(`${__dirname}/dog-img.txt`, res.body.message))
+  // writeFilePromise() mi ritorna una Promise e quindi con un altro .then() loggo il risultato di scrittura
+  .then(risultatoScritturaFile => console.log(risultatoScritturaFile))
+  // il metodo .catch() alla fine intercetta un errore lanciato in qualsiasi .then()
+  .catch(err => console.log(err.message));
