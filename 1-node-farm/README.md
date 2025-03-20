@@ -75,3 +75,7 @@
 [prettier](https://prettier.io/)
 
 [js setTimeout()](https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout)
+
+[dog ceo](https://dog.ceo/)
+
+[npm superagent](https://www.npmjs.com/package/superagent)
