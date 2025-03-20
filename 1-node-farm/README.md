@@ -89,3 +89,7 @@
 [js async await](https://it.javascript.info/async-await)
 
 [js try catch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch)
+
+[js throw](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw)
+
+[IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE)
