@@ -100,10 +100,24 @@
 
 [express app.listen()](https://expressjs.com/en/4x/api.html#app.listen)
 
-[express routing](https://expressjs.com/en/starter/basic-routing.html)
+[express routing](https://expressjs.com/en/guide/routing.html)
+
+[express app.METHOD()](https://expressjs.com/en/guide/routing.html)
 
 [express res.send()](https://expressjs.com/en/4x/api.html#res.send)
 
 [express res.status()](https://expressjs.com/en/4x/api.html#res.status)
 
 [express res.json()](https://expressjs.com/en/4x/api.html#res.json)
+
+[express middleware](https://expressjs.com/en/guide/using-middleware.html)
+
+[express app.use()](https://www.geeksforgeeks.org/express-js-app-use-function/)
+
+[express.json()](https://expressjs.com/en/api.html#express.json)
+
+[js Object.assign()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
+
+[js spread e rest operator](https://www.freecodecamp.org/news/three-dots-operator-in-javascript/)
+
+[js JSON.stringifyt()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)
