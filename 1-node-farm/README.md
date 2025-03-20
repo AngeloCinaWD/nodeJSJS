@@ -76,6 +76,8 @@
 
 [js setTimeout()](https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout)
 
-[dog ceo](https://dog.ceo/)
+[dog api](https://dog.ceo/)
 
 [npm superagent](https://www.npmjs.com/package/superagent)
+
+[js Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
