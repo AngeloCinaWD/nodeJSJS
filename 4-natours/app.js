@@ -10,9 +10,7 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf-8')
 );
 
-// per avere un codice più pulito e chiaro salvo la callback di ogni rotta in una const che richiamo in ogni rotta
-// essendo funzioni da chiamare come callbacks non le devo chiamare con le tonde perchè vorrebbe dire eseguirle quando il codice viene letto
-// devono invece essere eseguite solo quando viene chiamata la rotta
+// HANDLER FUNCTIONS
 const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -113,17 +111,6 @@ const deleteTour = (req, res) => {
 };
 
 // API ROUTES
-// app.get('/api/v1/tours', getAllTours);
-
-// app.get('/api/v1/tours/:id?', getTour);
-
-// app.post('/api/v1/tours', createTour);
-
-// app.patch('/api/v1/tours/:id', updateTour);
-
-// app.delete('/api/v1/tours/:id', deleteTour);
-
-// col metodo .route() è possibile indicare un url e poi definire concatenandoli tutti i metodi http e la funzione che invocano per quell'url
 app.route('/api/v1/tours').get(getAllTours).post(createTour);
 app
   .route('/api/v1/tours/:id')
@@ -131,6 +118,11 @@ app
   .patch(updateTour)
   .delete(deleteTour);
 
+// SERVER
 app.listen(port, '0.0.0.0', () => {
   console.log(`App is running on port ${port}...`);
 });
+
+// MIDDLEWARE AND REQUEST-RESPONSE CYCLE
+// il ciclo inizia con una request e finisce con una response, c'è un passaggio di dati. In mezzo ci sono i middleware che gestiscono questi dati, sia in entrata che prima dell'uscita con la response che è creata coi dati manipolati dai middleware per formare il response object. Anche il router è un middleware, un parser, un setting headers etc etc
+// I middleware lavorano in catena, prima uno fa qualcosa e poi passa quello che ha fatto ad un altro e così via. L'ultimo middleware è quello che invia la response, ad es. res.send() e non passa i dati a nessun altro middleware.
