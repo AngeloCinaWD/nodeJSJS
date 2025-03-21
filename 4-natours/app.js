@@ -56,20 +56,9 @@ app.post('/api/v1/tours', (req, res) => {
   );
 });
 
-// metodi per l'update delle resources: PUT e PATCH
-// con PUT ci aspettiamo l'intero oggetto con tutte le proprietà
-// con PATCH solo le proprietà con i nuovi valori
-// la rotta è sempre la stessa con path variable :id
 app.patch('/api/v1/tours/:id', (req, res) => {
-  // per i query params e per i path variables non cè bisogno del middleware express.json()
-  console.log(req.query);
-  console.log(req.params);
-
-  // trovo l'indice che ha nell'array tours il tour che voglio modificare
   const tourIndex = tours.findIndex(tour => tour.id === +req.params.id);
 
-  // se non c'è un tour con quell'id il metodo .finfIndex() mi torna un -1
-  // invio una risposta con status code 404
   if (tourIndex === -1) {
     res.status(404).json({
       status: 'fail',
@@ -77,17 +66,11 @@ app.patch('/api/v1/tours/:id', (req, res) => {
     });
   }
 
-  // se il tour esiste lo modifico nell'array richiamandolo per index
-  // utilizzo lo spread operator per ricreare un oggetto prendendo tutte le proprietà vecchie dell'oggetto tour e quelle nuove inviate in un oggetto tramite request.body (come nella post)
-  // le proprietà vecchie con lo stesso nome di quelle in quello inviato vengono sovrascritte coi nuovi valori
   tours[tourIndex] = {
     ...tours[tourIndex],
     ...req.body,
   };
 
-  // riscrivo il file json dei tours col json ricavato dal nuovo array tours
-  // in questo modo ho il tour sempre aggiornato quando riavvio il server
-  // nella callback invio una response con status code 200
   fs.writeFile(
     `${__dirname}/dev-data/data/tours-simple.json`,
     JSON.stringify(tours),
@@ -97,6 +80,44 @@ app.patch('/api/v1/tours/:id', (req, res) => {
         data: {
           tour: tours[tourIndex],
         },
+      });
+    }
+  );
+});
+
+// metodo delete per eliminare una resource
+app.delete('/api/v1/tours/:id', (req, res) => {
+  // trovo il tour con quell'id
+  const tourToDelete = tours.find(tour => tour.id === +req.params.id);
+
+  // se non c'è invio response con status code 404
+  if (!tourToDelete) {
+    res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+
+  // tramite .filter creo un nuovo array di tour con tutti tranne quello con l'id da eliminare
+  const updateTours = tours.filter(tour => tour.id !== +req.params.id);
+
+  // riscrivo il file passando il json del nuovo array di tour, senza quello eliminato
+  // rimando tutti i tours senza quello eliminato come response
+  // se non avessi mandato nulla nei data della response avrei utilizzato lo status code 204 NO CONTENT
+  fs.writeFile(
+    `${__dirname}/dev-data/data/tours-simple.json`,
+    JSON.stringify(updateTours),
+    () => {
+      // res.status(200).json({
+      //   status: 'success',
+      //   results: updateTours.length,
+      //   data: {
+      //     tours: updateTours,
+      //   },
+      // });
+      res.status(204).json({
+        status: 'success',
+        data: null,
       });
     }
   );
