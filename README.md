@@ -121,3 +121,5 @@
 [js spread e rest operator](https://www.freecodecamp.org/news/three-dots-operator-in-javascript/)
 
 [js JSON.stringifyt()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)
+
+[js .find()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
