@@ -10,7 +10,10 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf-8')
 );
 
-app.get('/api/v1/tours', (req, res) => {
+// per avere un codice più pulito e chiaro salvo la callback di ogni rotta in una const che richiamo in ogni rotta
+// essendo funzioni da chiamare come callbacks non le devo chiamare con le tonde perchè vorrebbe dire eseguirle quando il codice viene letto
+// devono invece essere eseguite solo quando viene chiamata la rotta
+const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
     results: tours.length,
@@ -18,9 +21,9 @@ app.get('/api/v1/tours', (req, res) => {
       tours,
     },
   });
-});
+};
 
-app.get('/api/v1/tours/:id?', (req, res) => {
+const getTour = (req, res) => {
   const tour = tours.find(tour => tour.id === +req.params.id);
 
   if (!tour) {
@@ -36,9 +39,9 @@ app.get('/api/v1/tours/:id?', (req, res) => {
       tour,
     },
   });
-});
+};
 
-app.post('/api/v1/tours', (req, res) => {
+const createTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
   const newTour = { ...req.body, id: newId };
   tours.push(newTour);
@@ -54,9 +57,9 @@ app.post('/api/v1/tours', (req, res) => {
       });
     }
   );
-});
+};
 
-app.patch('/api/v1/tours/:id', (req, res) => {
+const updateTour = (req, res) => {
   const tourIndex = tours.findIndex(tour => tour.id === +req.params.id);
 
   if (tourIndex === -1) {
@@ -83,14 +86,11 @@ app.patch('/api/v1/tours/:id', (req, res) => {
       });
     }
   );
-});
+};
 
-// metodo delete per eliminare una resource
-app.delete('/api/v1/tours/:id', (req, res) => {
-  // trovo il tour con quell'id
+const deleteTour = (req, res) => {
   const tourToDelete = tours.find(tour => tour.id === +req.params.id);
 
-  // se non c'è invio response con status code 404
   if (!tourToDelete) {
     res.status(404).json({
       status: 'fail',
@@ -98,30 +98,38 @@ app.delete('/api/v1/tours/:id', (req, res) => {
     });
   }
 
-  // tramite .filter creo un nuovo array di tour con tutti tranne quello con l'id da eliminare
   const updateTours = tours.filter(tour => tour.id !== +req.params.id);
 
-  // riscrivo il file passando il json del nuovo array di tour, senza quello eliminato
-  // rimando tutti i tours senza quello eliminato come response
-  // se non avessi mandato nulla nei data della response avrei utilizzato lo status code 204 NO CONTENT
   fs.writeFile(
     `${__dirname}/dev-data/data/tours-simple.json`,
     JSON.stringify(updateTours),
     () => {
-      // res.status(200).json({
-      //   status: 'success',
-      //   results: updateTours.length,
-      //   data: {
-      //     tours: updateTours,
-      //   },
-      // });
       res.status(204).json({
         status: 'success',
         data: null,
       });
     }
   );
-});
+};
+
+// API ROUTES
+// app.get('/api/v1/tours', getAllTours);
+
+// app.get('/api/v1/tours/:id?', getTour);
+
+// app.post('/api/v1/tours', createTour);
+
+// app.patch('/api/v1/tours/:id', updateTour);
+
+// app.delete('/api/v1/tours/:id', deleteTour);
+
+// col metodo .route() è possibile indicare un url e poi definire concatenandoli tutti i metodi http e la funzione che invocano per quell'url
+app.route('/api/v1/tours').get(getAllTours).post(createTour);
+app
+  .route('/api/v1/tours/:id')
+  .get(getTour)
+  .patch(updateTour)
+  .delete(deleteTour);
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`App is running on port ${port}...`);
