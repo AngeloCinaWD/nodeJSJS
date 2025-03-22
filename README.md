@@ -129,3 +129,11 @@
 [express app.router()](https://expressjs.com/en/5x/api.html#app.router)
 
 [js object Date.toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
+
+[node ip address network interfaces](https://stackoverflow.com/a/16605483)
+
+[npm morgan](https://www.npmjs.com/package/morgan)
+
+[morgan output dev](https://github.com/expressjs/morgan?tab=readme-ov-file#dev)
+
+[express middleware](https://expressjs.com/en/resources/middleware.html)

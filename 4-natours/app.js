@@ -1,28 +1,31 @@
-const { error } = require('console');
+// const os = require('os');
+// installo il package morgan, npm i morgan
+// è un middleware che mi consente di loggare in console informazioni circa le request e le response
+const morgan = require('morgan');
 const express = require('express');
 const fs = require('fs');
 const app = express();
-const port = 7777;
 
-// il metodo .use() ci permette di aggiungere un middleware al middleware stack
+// console.log(os.networkInterfaces());
+
+// MIDDLEWARE GLOBALI
+// utilizzo il middleware morgan(), gli passo come parametro 'dev', un formato già pronto per vedere info in console in un certo modo, nomi colorati etc
+app.use(morgan('dev'));
+
 app.use(express.json());
 
-// se voglio creare un middleware globale, attraversato da tutte le request, lo devo posizionare in cima al codice
-// ne creo uno che aggiunga una property requestTime ad ogni oggetto request che arriva
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
 
+// ARRAY CON I TOUR
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf-8')
 );
 
 // HANDLER FUNCTIONS
 const getAllTours = (req, res) => {
-  // loggo la property requestTime aggiunta all'oggetto request con il middleware
-  console.log(req.requestTime);
-
   res.status(200).json({
     status: 'success',
     results: tours.length,
@@ -121,26 +124,8 @@ const deleteTour = (req, res) => {
   );
 };
 
-// in un middleware ci passa sempre una request (primo argomento) ed una response (secondo argomento) ed in più c'è un argomento next (può chiamarsi come si vuole, l'importante è che sia il terzo argomento della funzione)
-// creo un middlewaree custom
-// utilizzo il metodo .use() passandogli una funzione coi 3 parametri req, res e next
-app.use((req, res, next) => {
-  // il middleware così definito viene applicato a qualsiasi request in entrata perchè si trova prima di tutti i middleware finali, quelli che chiudono il ciclo request-response, res.send() o res.json() etc
-  // faccio un log ad ogi request che arriva
-  console.log('Hello from middleware for all routes!');
-  // per far andare avanti il ciclo ho bisogno di richiamare il metodo next()
-  next();
-});
-
 // API ROUTES
 app.route('/api/v1/tours').get(getAllTours).post(createTour);
-
-// questo middleware viene visto solo dalle request che puntano all'url '/api/v1/tours/:id'
-// perchè sono dopo il middleware
-app.use((req, res, next) => {
-  console.log('Hello from middleware /api/v1/tours/:id!');
-  next();
-});
 
 app
   .route('/api/v1/tours/:id')
@@ -149,6 +134,7 @@ app
   .delete(deleteTour);
 
 // SERVER
+const port = 7777;
 app.listen(port, '0.0.0.0', () => {
   console.log(`App is running on port ${port}...`);
 });
