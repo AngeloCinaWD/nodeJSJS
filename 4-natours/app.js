@@ -3,7 +3,7 @@ const express = require('express');
 const fs = require('fs');
 const app = express();
 
-// app.use(morgan('dev'));
+app.use(morgan('dev'));
 
 app.use(express.json());
 
@@ -108,7 +108,6 @@ const createTour = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  // per creare l'id dello user nuovo creo un timestamp e lo trasformo in stringa
   const newUser = {
     ...req.body,
     _id: `${new Date().getTime()}`,
@@ -250,23 +249,43 @@ const deleteUser = (req, res) => {
 
 // API ROUTES
 //  TOURS
-app
-  .route('/api/v1/tours')
+// creo un Router per le route riguardanti i tour
+// la const tourRouter mi permette di connettermi al middleware Router
+// la sostisuisco al posto di app
+const tourRouter = express.Router();
+
+// essendo un middleware utilizzo app.use() per indicare che lo voglio utilizzare e che lo voglio utilizzare per una certa rotta
+app.use('/api/v1/tours', tourRouter);
+// app
+tourRouter
+  // devo modificare la rotta andando a specificare solo l'endpoint perchè l'url della rotta l'ho indicato nell'app.use che utilizzerà quel middleware per le rotte che hanno quell'url
+  // .route('/api/v1/tours')
+  .route('/')
   .get(getAllTours)
   .post(createTour);
 
-app
-  .route('/api/v1/tours/:id')
+// app
+tourRouter
+  // .route('/api/v1/tours/:id')
+  .route('/:id')
   .get(getTour)
   .patch(updateTour)
   .delete(deleteTour);
 // USERS
-app
-  .route('/api/v1/users')
+// creo il mddleware anchge per le rotte riguardanti gli users
+// monto un router per un determinato url
+const userRouter = express.Router();
+app.use('/api/v1/users', userRouter);
+// app
+userRouter
+  // .route('/api/v1/users')
+  .route('/')
   .get(getAllUsers)
   .post(createUser);
-app
-  .route('/api/v1/users/:id')
+// app
+userRouter
+  // .route('/api/v1/users/:id')
+  .route('/:id')
   .get(getUser)
   .patch(updateUser)
   .delete(deleteUser);
