@@ -22,8 +22,6 @@ exports.checkId = (req, res, next, val) => {
   next();
 };
 
-// creazione middleware per controllare che il body contenga le properties name e price
-// se non le contiene devo restituire un errore
 exports.checkBodyReq = (req, res, next) => {
   if (
     !Object.hasOwn(req.body, 'name') ||

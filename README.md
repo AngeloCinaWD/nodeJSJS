@@ -147,3 +147,9 @@
 [express router.param()](https://www.geeksforgeeks.org/express-js-router-param-function/)
 
 [js OBJECT.hasOwn()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn)
+
+[express.static() 1](https://expressjs.com/en/4x/api.html#express.static)
+
+[express.static() 2](https://expressjs.com/en/starter/static-files.html)
+
+[express.static() 3](https://expressjs.com/en/guide/using-middleware.html#middleware.built-in)
