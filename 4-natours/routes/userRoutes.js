@@ -7,10 +7,14 @@ const {
   createUser,
   updateUser,
   deleteUser,
+  checkId,
 } = require('./../controllers/userController');
 
 // CREAZIONE OGGETTO ROUTER
 const router = express.Router();
+
+// PARAM MIDDLEWARE
+router.param('id', checkId);
 
 // DEFINIZIONE DELLE ROTTE E DELL'HANDLER FUNCTION DA RICHIAMARE
 router.route('/').get(getAllUsers).post(createUser);

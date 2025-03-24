@@ -6,22 +6,22 @@ const tourController = require('./../controllers/tourController');
 // CREAZIONE OGGETTO ROUTER
 const router = express.Router();
 
-// PARAM MIDDLEWARE: sono dei middleware che runnano solo per alcuni parametri, quindi quando ci sono determinati parametri nell'url.
-// ad esempio per la rotta con /:id abbiamo un path parameters id
-// creo un param middleware dall'oggetto router con metodo .param(), questo middleware ha un quarto argomento che è il valore del parametro in ingresso con la request
-// questo middleware è specifico per le request indirizzate alle rotte per i tour perchè è definito nel router dei tour, non funzionerebbe anche per gli user
-// router.param('id', (req, res, next, val) => {
-//   console.log(val);
-//   next();
-// });
-// richiamo la funzione checkId che ho definito ed implementato nel controller, viene chiamata prima di tutte le rotte per un determinato url e che hanno un determinato path param
+// PARAM MIDDLEWARE
 router.param('id', tourController.checkId);
 
 // DEFINIZIONE DELLE ROTTE E DELL'HANDLER FUNCTION DA RICHIAMARE
 router
   .route('/')
   .get(tourController.getAllTours)
-  .post(tourController.createTour);
+  // posso utilizzare più middleware per una rotta
+  // vengono chiamati nell'ordine in cui li indico
+  // creo un middleware che controlli se il body che contiene i dati per creare un nuovo tour contenga per forza le properties name e price
+  // quindi sto creando una validation dei dati ingresso con name e price required
+  // .post(tourController.createTour);
+  .post(
+    tourController.checkBodyReq,
+    tourController.createTour
+  );
 router
   .route('/:id')
   .get(tourController.getTour)

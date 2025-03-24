@@ -10,6 +10,25 @@ const users = JSON.parse(
 
 // EXPORT DELLE FUNZIONI IN UN OGGETTO
 // NELL'IMPORT POSSO IMPORTARE UN OGGETTO CON PROPRIETA' CON NOME DELLA FUNZIONE O TRAMITE DESTRUTTURAZIONE DELL'OGGETTO AVERE TANTE CONST PER OGNI FUNZIONE
+
+const checkId = (req, res, next, val) => {
+  console.log('entro qui');
+
+  const user = users.find(user => user._id === val);
+
+  if (!user) {
+    console.log('mi fermo qui');
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+
+  console.log('passato da qui');
+
+  next();
+};
+
 const getAllUsers = (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -25,12 +44,12 @@ const getUser = (req, res) => {
     user => user._id === req.params.id
   );
 
-  if (!user) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
+  // if (!user) {
+  //   return res.status(404).json({
+  //     status: 'fail',
+  //     message: 'Invalid ID',
+  //   });
+  // }
 
   res.status(200).json({
     status: 'success',
@@ -67,12 +86,12 @@ const updateUser = (req, res) => {
     user => user._id === req.params.id
   );
 
-  if (userIndex === -1) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
+  // if (userIndex === -1) {
+  //   return res.status(404).json({
+  //     status: 'fail',
+  //     message: 'Invalid ID',
+  //   });
+  // }
 
   users[userIndex] = {
     ...users[userIndex],
@@ -94,24 +113,24 @@ const updateUser = (req, res) => {
 };
 
 const deleteUser = (req, res) => {
-  const userToDelete = users.find(
-    user => user._id === req.params.id
-  );
+  // const userToDelete = users.find(
+  //   user => user._id === req.params.id
+  // );
 
-  if (!userToDelete) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
+  // if (!userToDelete) {
+  //   return res.status(404).json({
+  //     status: 'fail',
+  //     message: 'Invalid ID',
+  //   });
+  // }
 
-  const updateUsers = users.filter(
+  const updatedUsers = users.filter(
     user => user._id !== req.params.id
   );
 
   fs.writeFile(
     `${__dirname}/../dev-data/data/users.json`,
-    JSON.stringify(updateUsers),
+    JSON.stringify(updatedUsers),
     () => {
       res.status(204).json({
         status: 'success',
@@ -127,4 +146,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  checkId,
 };

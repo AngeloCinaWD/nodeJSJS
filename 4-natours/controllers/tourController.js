@@ -10,19 +10,28 @@ const tours = JSON.parse(
 
 // EXPORT SINGOLO DI OGNI FUNZIONE
 // NELL'IMPORT POSSO IMPORTARE UN OGGETTO CON PROPRIETA' CON NOME DELLA FUNZIONE O TRAMITE DESTRUTTURAZIONE DELL'OGGETTO AVERE TANTE CONST PER OGNI FUNZIONE
-
-// nelle funzioni che gestiscono un id, che lavorano su una determinata resource, l'utilizzo di un param middleware è perfetto per non ripetere il codice in ogni funzione
-// mi basta creare un middleware che faccia un controllo se la resource esiste o no prima di arrivare alla funzione, in caso negativo invia una res con errore
-// per creare il middleware esporto una funzione ad esempio checkId che ha come struttura quella del middleware con 4 parametri, un return in caso di errore e un next() in modo da permettere, in caso tutto vada bene, di proseguire nel request-response cycle
 exports.checkId = (req, res, next, val) => {
-  console.log('sto passando da qui');
-
   const tour = tours.find(tour => tour.id === +val);
 
   if (!tour) {
     return res.status(404).json({
       status: 'fail',
       message: 'Invalid ID',
+    });
+  }
+  next();
+};
+
+// creazione middleware per controllare che il body contenga le properties name e price
+// se non le contiene devo restituire un errore
+exports.checkBodyReq = (req, res, next) => {
+  if (
+    !Object.hasOwn(req.body, 'name') ||
+    !Object.hasOwn(req.body, 'price')
+  ) {
+    return res.status(422).json({
+      status: 'fail',
+      message: 'Missing name or price property',
     });
   }
   next();
@@ -42,14 +51,6 @@ exports.getTour = (req, res) => {
   const tour = tours.find(
     tour => tour.id === +req.params.id
   );
-
-  // questo controllo lo faccio nel middleware prima di arrivare alla funzione getTour()
-  // if (!tour) {
-  //   return res.status(404).json({
-  //     status: 'fail',
-  //     message: 'Invalid ID',
-  //   });
-  // }
 
   return res.status(200).json({
     status: 'success',
@@ -82,15 +83,6 @@ exports.updateTour = (req, res) => {
     tour => tour.id === +req.params.id
   );
 
-  // il controllo se il tour esiste lo faccio nel param middleware checkId, quindi se il tour esiste arrivo in questa funzione e trovo l'index del tour, se il tour con quell'id non esiste qui non ci arrivo proprio
-
-  // if (tourIndex === -1) {
-  //   return res.status(404).json({
-  //     status: 'fail',
-  //     message: 'Invalid ID',
-  //   });
-  // }
-
   tours[tourIndex] = {
     ...tours[tourIndex],
     ...req.body,
@@ -111,19 +103,6 @@ exports.updateTour = (req, res) => {
 };
 
 exports.deleteTour = (req, res) => {
-  // facendo il controllo nel middleware se il tour esista o no non ho problemi ad eseguire questo codice
-
-  const tourToDelete = tours.find(
-    tour => tour.id === +req.params.id
-  );
-
-  // if (!tourToDelete) {
-  //   return res.status(404).json({
-  //     status: 'fail',
-  //     message: 'Invalid ID',
-  //   });
-  // }
-
   const updatedTours = tours.filter(
     tour => tour.id !== +req.params.id
   );

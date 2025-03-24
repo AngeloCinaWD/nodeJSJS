@@ -145,3 +145,5 @@
 [express Param Middleware](https://javascript.plainenglish.io/using-param-middleware-in-express-simplifying-route-validation-36e939635567)
 
 [express router.param()](https://www.geeksforgeeks.org/express-js-router-param-function/)
+
+[js OBJECT.hasOwn()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn)
