@@ -161,3 +161,23 @@
 [SET NODE_ENV](https://stackoverflow.com/a/45345355)
 
 [npm dotenv](https://www.npmjs.com/package/dotenv)
+
+[npm eslint](https://www.npmjs.com/package/eslint)
+
+[eslint](https://eslint.org/)
+
+[npm prettier](https://www.npmjs.com/package/prettier)
+
+[npm eslint config prettier](https://www.npmjs.com/package/eslint-config-prettier)
+
+[npm eslint plugin prettier](https://www.npmjs.com/package/eslint-plugin-prettier)
+
+[npm eslint-config-airbnb](https://www.npmjs.com/package/eslint-config-airbnb)
+
+[npm eslint-plugin-node](https://www.npmjs.com/package/eslint-plugin-node)
+
+[npm eslint-plugin-import](https://www.npmjs.com/package/eslint-plugin-import)
+
+[npm eslint-plugin-jsx-a11y](https://www.npmjs.com/package/eslint-plugin-jsx-a11y)
+
+[npm eslint-plugin-react](https://www.npmjs.com/package/eslint-plugin-react)

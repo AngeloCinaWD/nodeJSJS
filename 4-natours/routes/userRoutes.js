@@ -8,7 +8,7 @@ const {
   updateUser,
   deleteUser,
   checkId,
-} = require('./../controllers/userController');
+} = require('../controllers/userController');
 
 // CREAZIONE OGGETTO ROUTER
 const router = express.Router();
@@ -18,11 +18,7 @@ router.param('id', checkId);
 
 // DEFINIZIONE DELLE ROTTE E DELL'HANDLER FUNCTION DA RICHIAMARE
 router.route('/').get(getAllUsers).post(createUser);
-router
-  .route('/:id')
-  .get(getUser)
-  .patch(updateUser)
-  .delete(deleteUser);
+router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
 
 // EXPORTS DELL'OGGETTO ROUTER CREATO
 module.exports = router;

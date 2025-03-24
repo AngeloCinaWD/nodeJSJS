@@ -1,7 +1,7 @@
 const express = require('express');
 
 // IMPORT DEL CONTROLLER CON LE HANDLER FUNCTIONS
-const tourController = require('./../controllers/tourController');
+const tourController = require('../controllers/tourController');
 
 // CREAZIONE OGGETTO ROUTER
 const router = express.Router();
@@ -18,10 +18,7 @@ router
   // creo un middleware che controlli se il body che contiene i dati per creare un nuovo tour contenga per forza le properties name e price
   // quindi sto creando una validation dei dati ingresso con name e price required
   // .post(tourController.createTour);
-  .post(
-    tourController.checkBodyReq,
-    tourController.createTour
-  );
+  .post(tourController.checkBodyReq, tourController.createTour);
 router
   .route('/:id')
   .get(tourController.getTour)
