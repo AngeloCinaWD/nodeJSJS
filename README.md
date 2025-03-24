@@ -153,3 +153,11 @@
 [express.static() 2](https://expressjs.com/en/starter/static-files.html)
 
 [express.static() 3](https://expressjs.com/en/guide/using-middleware.html#middleware.built-in)
+
+[app.get('env')](https://www.restack.io/p/express-js-app-get-env)
+
+[NODE_ENV](https://stackoverflow.com/questions/16978256/what-is-node-env-and-how-to-use-it-in-express)
+
+[SET NODE_ENV](https://stackoverflow.com/a/45345355)
+
+[npm dotenv](https://www.npmjs.com/package/dotenv)
