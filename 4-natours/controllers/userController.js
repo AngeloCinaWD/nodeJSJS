@@ -1,7 +1,6 @@
-// ho bisogno del modulo fs
 const fs = require('fs');
 
-// array con gli user
+// ARRAY CON GLI USER
 const users = JSON.parse(
   fs.readFileSync(
     `${__dirname}/../dev-data/data/users.json`,
@@ -9,10 +8,9 @@ const users = JSON.parse(
   )
 );
 
-// handler functions
-// le esporto tutte
+// EXPORT DELLE FUNZIONI IN UN OGGETTO
+// NELL'IMPORT POSSO IMPORTARE UN OGGETTO CON PROPRIETA' CON NOME DELLA FUNZIONE O TRAMITE DESTRUTTURAZIONE DELL'OGGETTO AVERE TANTE CONST PER OGNI FUNZIONE
 const getAllUsers = (req, res) => {
-  // exports.getAllUsers = (req, res) => {
   res.status(200).json({
     status: 'success',
     results: users.length,
@@ -23,7 +21,6 @@ const getAllUsers = (req, res) => {
 };
 
 const getUser = (req, res) => {
-  // exports.getUser = (req, res) => {
   const user = users.find(
     user => user._id === req.params.id
   );
@@ -44,7 +41,6 @@ const getUser = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  // exports.createUser = (req, res) => {
   const newUser = {
     ...req.body,
     _id: `${new Date().getTime()}`,
@@ -67,7 +63,6 @@ const createUser = (req, res) => {
 };
 
 const updateUser = (req, res) => {
-  // exports.updateUser = (req, res) => {
   const userIndex = users.findIndex(
     user => user._id === req.params.id
   );
@@ -99,7 +94,6 @@ const updateUser = (req, res) => {
 };
 
 const deleteUser = (req, res) => {
-  // exports.deleteUser = (req, res) => {
   const userToDelete = users.find(
     user => user._id === req.params.id
   );
@@ -134,14 +128,3 @@ module.exports = {
   updateUser,
   deleteUser,
 };
-
-// posso esportare un oggetto con tutte le const che voglio siano utilizzabili dove lo importo
-// dove importo posso utilizzarle o importando l'intero oggetto oppure destrutturandolo con il nome esatto di ogni funzione esportata:
-// const {
-//   getAllUsers,
-//   getUser,
-//   createUser,
-//   updateUser,
-//   deleteUser,
-// } = require('./../controllers/userController');
-// oppure esportare ogni funzione con un exports.funzione e dove importo o importo tutto l'oggetto e poi richiamare la funzione dove mi serve (const userController = require('./../controllers/userController'); userController.nomeFunzione), oppure come prima destrutturare l'oggetto e richiamare la funzione solo col suo nome dove mi serve
